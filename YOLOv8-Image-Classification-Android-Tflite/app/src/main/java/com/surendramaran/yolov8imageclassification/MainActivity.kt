@@ -6,8 +6,10 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.NavController
@@ -27,6 +29,7 @@ class MainActivity : AppCompatActivity(){
 
         enableEdgeToEdge()
         setContentView(binding.root)
+        setStatusBarColor(R.color.primary)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -38,5 +41,13 @@ class MainActivity : AppCompatActivity(){
         navController = navHostFragment.navController
 
     }
+
+
+    private fun setStatusBarColor(color: Int) {
+        window?.statusBarColor = ContextCompat.getColor(baseContext, color)
+        WindowCompat.getInsetsController(window, window.decorView).isAppearanceLightStatusBars = false
+    }
+
+
 
 }

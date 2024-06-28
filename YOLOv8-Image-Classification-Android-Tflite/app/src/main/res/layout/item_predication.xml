@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5"
-            tools:text="100" />
+            tools:text="10" />
 
         <TextView
             android:id="@+id/tvName"
@@ -41,7 +41,6 @@
             android:layout_height="wrap_content"
             android:paddingHorizontal="16dp"
             android:text="@{prediction.name}"
-            android:textColor="@color/text_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvPosition"
@@ -56,7 +55,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text='@{String.format("%.2f", prediction.score)}'
-            android:textColor="@color/text_black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"

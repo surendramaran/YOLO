@@ -1,30 +1,34 @@
 package com.surendramaran.yolov8imageclassification
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.surendramaran.yolov8imageclassification.databinding.ItemPredicationBinding
 
-class PredicationAdapter : ListAdapter<Prediction, PredicationAdapter.ViewHolder>(DiffCallBack()){
+@SuppressLint("NotifyDataSetChanged")
+class PredicationAdapter : RecyclerView.Adapter<PredicationAdapter.ViewHolder>(){
 
-    class DiffCallBack : DiffUtil.ItemCallback<Prediction>() {
-        override fun areItemsTheSame(oldItem: Prediction, newItem: Prediction): Boolean {
-            return oldItem.id == newItem.id
-        }
+    private var predictions: List<Prediction> = emptyList()
 
-        override fun areContentsTheSame(oldItem: Prediction, newItem: Prediction): Boolean {
-            return oldItem == newItem
-        }
-    }
+    override fun getItemCount() = predictions.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position)!!, position)
+        holder.bind(predictions[position], position)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent)
+    }
+
+    fun setData(newData: List<Prediction>) {
+        predictions = newData
+        notifyDataSetChanged()
+    }
+
+    fun clear() {
+        predictions = emptyList()
+        notifyDataSetChanged()
     }
 
     class ViewHolder private constructor(private val binding: ItemPredicationBinding) : RecyclerView.ViewHolder(binding.root) {

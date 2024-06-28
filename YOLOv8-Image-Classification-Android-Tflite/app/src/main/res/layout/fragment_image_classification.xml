@@ -14,7 +14,6 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            android:textColor="#1a1a1a"
             android:fontFamily="@font/merriweather_black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +25,8 @@
 
         <ImageView
             android:id="@+id/ivMain"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginVertical="16dp"
             app:layout_constraintTop_toBottomOf="@id/tvTitle"
             app:layout_constraintDimensionRatio="1:1"
             android:layout_width="match_parent"
@@ -58,7 +58,9 @@
 
         <com.google.android.material.card.MaterialCardView
             app:cardElevation="4dp"
-            android:layout_margin="16dp"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginBottom="8dp"
+            app:strokeColor="@android:color/transparent"
             app:cardBackgroundColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -70,21 +72,17 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-
-
                 <TextView
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="16dp"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     android:id="@+id/tvPredications"
-                    android:textColor="#1a1a1a"
                     android:fontFamily="@font/merriweather_bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/predications"
                     android:textSize="16sp"/>
-
 
                 <LinearLayout
                     android:id="@+id/llInterfaceTime"
@@ -98,8 +96,6 @@
                     android:orientation="horizontal">
                     <TextView
                         android:textSize="12sp"
-                        android:textColor="#1a1a1a"
-                        android:fontFamily="@font/merriweather_regular"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/interface_time"/>
@@ -108,15 +104,14 @@
                         android:layout_marginStart="2dp"
                         android:textSize="12sp"
                         android:id="@+id/tvInterfaceTime"
-                        android:textColor="#1a1a1a"
-                        android:fontFamily="@font/merriweather_regular"
+                        android:textColor="@color/primary"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         tools:text="100ms"/>
 
                 </LinearLayout>
-
                 <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@id/tvPredications"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:id="@+id/rvPredication"

@@ -1,8 +1,11 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.YoloV8ImageClassification" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+    <style name="Base.Theme.YoloV8ImageClassification"
+        parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="fontFamily">@font/merriweather_regular</item>
+        <item name="android:textColor">@color/text_black</item>
     </style>
 
     <style name="Theme.YoloV8ImageClassification" parent="Base.Theme.YoloV8ImageClassification" />

@@ -5,4 +5,6 @@
 
     <color name="text_white">#EEEEEE</color>
     <color name="text_black">#1a1a1a</color>
+
+    <color name="primary">#A24990</color>
 </resources>

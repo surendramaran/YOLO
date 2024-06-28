@@ -1,20 +1,24 @@
 package com.surendramaran.yolov8imageclassification.ui
 
+import android.content.Context
 import android.graphics.Bitmap
+import android.hardware.camera2.CameraCharacteristics
+import android.hardware.camera2.CameraManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.surendramaran.yolov8imageclassification.BuildConfig
-import com.surendramaran.yolov8imageclassification.Constants
 import com.surendramaran.yolov8imageclassification.Constants.LABELS_PATH
 import com.surendramaran.yolov8imageclassification.Constants.MODEL_PATH
 import com.surendramaran.yolov8imageclassification.ImageClassification
+import com.surendramaran.yolov8imageclassification.OrientationLiveData
 import com.surendramaran.yolov8imageclassification.PredicationAdapter
 import com.surendramaran.yolov8imageclassification.Prediction
 import com.surendramaran.yolov8imageclassification.R
@@ -32,13 +36,14 @@ class ImageClassificationFragment : Fragment(), ImageClassification.Classificati
 
     private var imageClassification: ImageClassification? = null
     private lateinit var predicationAdapter: PredicationAdapter
+    private lateinit var orientationLiveData: OrientationLiveData
 
     private lateinit var backgroundExecutor: ExecutorService
 
     private val photoPicker = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) {
         it?.let {
-            val bitmap = Utils.uriToBitmap(requireContext(), it) ?: return@let
-            runClassification(bitmap)
+            val rotated = Utils.getBitmapFromUri(requireContext(), it) ?: return@let
+            runClassification(rotated)
         }
     }
 
@@ -47,9 +52,20 @@ class ImageClassificationFragment : Fragment(), ImageClassification.Classificati
         if (it) {
             currentPhotoFile?.let { file ->
                 val bitmap = Utils.fileToBitmap(file.absolutePath) ?: return@let
-                runClassification(bitmap)
+                val rotation = orientationLiveData.value ?: 90
+                val rotated = Utils.rotatedBitmap(bitmap, rotation)
+                runClassification(rotated)
             }
         }
+    }
+
+    private val cameraManager: CameraManager by lazy {
+        val context = requireContext().applicationContext
+        context.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+    }
+
+    private val characteristics: CameraCharacteristics by lazy {
+        cameraManager.getCameraCharacteristics(Utils.getCameraId(cameraManager))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -70,6 +86,12 @@ class ImageClassificationFragment : Fragment(), ImageClassification.Classificati
 
         backgroundExecutor.execute {
             imageClassification = ImageClassification(requireContext(), MODEL_PATH, LABELS_PATH, this)
+        }
+
+        orientationLiveData = OrientationLiveData(requireContext(), characteristics).apply {
+            observe(viewLifecycleOwner) { orientation ->
+                Log.d(ImageClassificationFragment::class.java.simpleName, "Orientation changed: $orientation")
+            }
         }
 
         bindListeners()
@@ -110,7 +132,7 @@ class ImageClassificationFragment : Fragment(), ImageClassification.Classificati
 
     override fun onResult(data: List<Prediction>, inferenceTime: Long) {
         lifecycleScope.launch(Dispatchers.Main) {
-            predicationAdapter.submitList(data)
+            predicationAdapter.setData(data)
             binding.llInterfaceTime.visibility = View.VISIBLE
             binding.tvInterfaceTime.text = getString(R.string.interface_time_value, inferenceTime.toString())
         }

@@ -113,13 +113,22 @@ class ImageClassification(
 
         val outputArray = output.floatArray
 
-        val predictions = outputArray.mapIndexed { index, float ->
-            Prediction(
-                id = index,
-                name = labels[index],
-                score = float
-            )
-        }.sortedByDescending { it.score }
+        val predictions = mutableListOf<Prediction>()
+
+        outputArray.forEachIndexed { index, float ->
+            if (float > CONFIDENCE_THRESHOLD) {
+                predictions.add(
+                    Prediction(
+                        id = index,
+                        name = labels[index],
+                        score = float
+                    )
+                )
+            }
+        }
+
+        predictions.sortByDescending { it.score }
+
         inferenceTime = SystemClock.uptimeMillis() - inferenceTime
         classificationListener.onResult(predictions, inferenceTime)
     }
@@ -134,5 +143,6 @@ class ImageClassification(
         private const val INPUT_STANDARD_DEVIATION = 255f
         private val INPUT_IMAGE_TYPE = DataType.FLOAT32
         private val OUTPUT_IMAGE_TYPE = DataType.FLOAT32
+        private const val CONFIDENCE_THRESHOLD = 0.01F
     }
 }
