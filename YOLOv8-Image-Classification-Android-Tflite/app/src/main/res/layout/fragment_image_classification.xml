@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".ui.ImageClassificationFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:textColor="#1a1a1a"
+            android:fontFamily="@font/merriweather_black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/image_classification"
+            android:textSize="24sp"
+            android:layout_margin="32dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivMain"
+            android:layout_margin="16dp"
+            app:layout_constraintTop_toBottomOf="@id/tvTitle"
+            app:layout_constraintDimensionRatio="1:1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"/>
+
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:id="@+id/llButtons"
+            android:paddingHorizontal="16dp"
+            android:weightSum="2"
+            app:layout_constraintTop_toBottomOf="@id/ivMain"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnCamera"
+                app:icon="@drawable/ic_camera"
+                android:text="@string/camera"
+                style="@style/button_half" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnGallery"
+                app:icon="@drawable/ic_image"
+                android:text="@string/gallery"
+                style="@style/button_half"/>
+
+        </LinearLayout>
+
+        <com.google.android.material.card.MaterialCardView
+            app:cardElevation="4dp"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintTop_toBottomOf="@id/llButtons"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+
+
+                <TextView
+                    android:layout_marginTop="8dp"
+                    android:layout_marginStart="16dp"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:id="@+id/tvPredications"
+                    android:textColor="#1a1a1a"
+                    android:fontFamily="@font/merriweather_bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/predications"
+                    android:textSize="16sp"/>
+
+
+                <LinearLayout
+                    android:id="@+id/llInterfaceTime"
+                    android:visibility="gone"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="@id/tvPredications"
+                    app:layout_constraintTop_toTopOf="@id/tvPredications"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:textSize="12sp"
+                        android:textColor="#1a1a1a"
+                        android:fontFamily="@font/merriweather_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/interface_time"/>
+
+                    <TextView
+                        android:layout_marginStart="2dp"
+                        android:textSize="12sp"
+                        android:id="@+id/tvInterfaceTime"
+                        android:textColor="#1a1a1a"
+                        android:fontFamily="@font/merriweather_regular"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        tools:text="100ms"/>
+
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    app:layout_constraintTop_toBottomOf="@id/tvPredications"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:id="@+id/rvPredication"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">YoloV8 Image Classification</string>
+    <string name="image_classification">Image Classification</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="predications">Predications</string>
+    <string name="interface_time">Interface Time:</string>
+    <string name="interface_time_value">%1$sms</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
