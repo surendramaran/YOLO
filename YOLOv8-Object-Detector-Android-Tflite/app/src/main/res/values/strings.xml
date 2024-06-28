@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">YOLOv8 TfLite</string>
+    <string name="gpu">GPU</string>
+</resources>
