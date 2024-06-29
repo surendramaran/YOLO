@@ -1,5 +1,8 @@
 ## YOLOv8 Live Image Classification Android Application
 
+### Download APK
+Download the sample apk [here](https://github.com/surendramaran/Machine-Learning-in-Mobile/blob/main/YOLOv8-Image-Classification-Android-Tflite/app/release/app-release.apk)
+
 ### Description
 This Android application is designed to perform live image classification using the YOLOv8 machine learning model. YOLOv8 (You Only Look Once version 8) is known for its real-time image classification capabilities, and this app brings that functionality to Android devices.
 
