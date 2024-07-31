@@ -18,7 +18,8 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.surendramaran.yolov8tflite.Constants.LABELS_PATH
 import com.surendramaran.yolov8tflite.Constants.MODEL_PATH
-import com.surendramaran.yolov8tflite.databinding.ActivityMainBinding
+import yolov8tflite.R
+import yolov8tflite.databinding.ActivityMainBinding
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
@@ -140,7 +141,7 @@ class MainActivity : AppCompatActivity(), Detector.DetectorListener {
                 imageAnalyzer
             )
 
-            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+            preview?.surfaceProvider = binding.viewFinder.surfaceProvider
         } catch(exc: Exception) {
             Log.e(TAG, "Use case binding failed", exc)
         }

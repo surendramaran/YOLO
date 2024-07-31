@@ -16,7 +16,7 @@
         android:theme="@style/Theme.YOLOv8TfLite"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name="com.surendramaran.yolov8tflite.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
