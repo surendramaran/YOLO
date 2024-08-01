@@ -20,6 +20,6 @@ For any questions or feedback, feel free to contact [surendramaran8@gmail.com] o
 
 This repository includes code to integrate the YOLOv8 model into mobile applications. The YOLOv8 model itself is licensed under the [GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
-The code and work done to integrate YOLOv8 for mobile use is licensed under the [MIT License](https://github.com/surendramaran/YOLOv8-TfLite-Object-Detector/blob/main/LICENSE).
+The code and work done to integrate YOLOv8 for mobile use is licensed under the [MIT License](https://github.com/surendramaran/YOLO/blob/main/YOLOv8-Object-Detector-Android-Tflite/LICENSE).
 
 **Please see the respective licenses for more details.**
