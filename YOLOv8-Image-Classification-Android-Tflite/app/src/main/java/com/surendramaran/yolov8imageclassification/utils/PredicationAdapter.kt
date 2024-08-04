@@ -1,9 +1,10 @@
-package com.surendramaran.yolov8imageclassification
+package com.surendramaran.yolov8imageclassification.utils
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.surendramaran.yolov8imageclassification.Prediction
 import com.surendramaran.yolov8imageclassification.databinding.ItemPredicationBinding
 
 @SuppressLint("NotifyDataSetChanged")

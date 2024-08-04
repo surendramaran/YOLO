@@ -1,4 +1,4 @@
-package com.surendramaran.yolov8imageclassification
+package com.surendramaran.yolov8imageclassification.utils
 
 import android.content.Context
 import android.hardware.camera2.CameraCharacteristics

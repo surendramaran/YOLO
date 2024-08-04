@@ -18,11 +18,11 @@ import com.surendramaran.yolov8imageclassification.BuildConfig
 import com.surendramaran.yolov8imageclassification.Constants.LABELS_PATH
 import com.surendramaran.yolov8imageclassification.Constants.MODEL_PATH
 import com.surendramaran.yolov8imageclassification.ImageClassification
-import com.surendramaran.yolov8imageclassification.OrientationLiveData
-import com.surendramaran.yolov8imageclassification.PredicationAdapter
+import com.surendramaran.yolov8imageclassification.utils.OrientationLiveData
+import com.surendramaran.yolov8imageclassification.utils.PredicationAdapter
 import com.surendramaran.yolov8imageclassification.Prediction
 import com.surendramaran.yolov8imageclassification.R
-import com.surendramaran.yolov8imageclassification.Utils
+import com.surendramaran.yolov8imageclassification.utils.Utils
 import com.surendramaran.yolov8imageclassification.databinding.FragmentImageClassificationBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
