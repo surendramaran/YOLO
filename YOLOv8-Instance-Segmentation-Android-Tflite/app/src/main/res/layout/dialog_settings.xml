@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    app:cardBackgroundColor="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbSeparateOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/separate_out"
+                    android:textSize="12sp"/>
+
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/cbMaskOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/mask_out"
+                    android:textSize="12sp"/>
+
+                <LinearLayout
+                    android:id="@+id/llPatreon"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:padding="16dp">
+
+                        <ImageView
+                            android:layout_gravity="center_vertical"
+                            android:layout_width="90dp"
+                            android:adjustViewBounds="true"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_patreon" />
+
+                        <TextView
+                            android:id="@+id/tvPatreonLink"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/patreon_message"
+                            android:textColor="@color/primary"
+                            android:textSize="12sp"
+                            android:layout_marginStart="8dp"
+                            android:textStyle="bold"/>
+                </LinearLayout>
+        </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>

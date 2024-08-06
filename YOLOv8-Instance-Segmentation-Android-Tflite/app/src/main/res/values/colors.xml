@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="text_white">#EEEEEE</color>
+    <color name="text_black">#1a1a1a</color>
+
+    <color name="primary">#FF5722</color>
+
+
+    <!--    Box colors-->
+    <color name="overlay_blue">#3F51B5</color>
+    <color name="overlay_green">#009688</color>
+    <color name="overlay_red">#E53935</color>
+    <color name="overlay_orange">#FF5722</color>
+    <color name="overlay_purple">#9C27B0</color>
+    <color name="overlay_pink">#C2185B</color>
+    <color name="overlay_cyan">#00BCD4</color>
+    <color name="overlay_gray">#607D8B</color>
+
+</resources>

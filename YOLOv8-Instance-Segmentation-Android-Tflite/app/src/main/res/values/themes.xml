@@ -1,0 +1,12 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <style name="Base.Theme.YOLOv8InstanceSegmentation"
+        parent="Theme.Material3.Light.NoActionBar">
+
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:fontFamily">@font/merriweather_regular</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+    <style name="Theme.YOLOv8InstanceSegmentation" parent="Base.Theme.YOLOv8InstanceSegmentation" />
+</resources>

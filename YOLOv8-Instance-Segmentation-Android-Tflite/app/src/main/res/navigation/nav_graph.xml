@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/instanceSegmentationFragment">
+
+    <fragment
+        android:id="@+id/instanceSegmentationFragment"
+        android:name="com.surendramaran.yolov8_instancesegmentation.ui.InstanceSegmentationFragment"
+        android:label="fragment_instance_segmentation"
+        tools:layout="@layout/fragment_instance_segmentation" />
+</navigation>

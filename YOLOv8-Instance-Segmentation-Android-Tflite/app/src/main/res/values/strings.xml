@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">YOLOv8 Instance Segmentation</string>
+
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="predications">Predications</string>
+    <string name="interface_time">Interface Time:</string>
+    <string name="interface_time_value">%1$sms</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="pre_process_time">Pre Process Time:</string>
+    <string name="_0ms">0ms</string>
+    <string name="post_process_time">Post Process Time:</string>
+    <string name="differentiate_classes">Differentiate classes</string>
+    <string name="mask_out">Mask out</string>
+    <string name="separate_out">Separate out</string>
+    <string name="empty_string" />
+    <string name="show_label">Show Label</string>
+    <string name="patreon_message">Support me at Patreon</string>
+    <string name="settings">Settings</string>
+</resources>
