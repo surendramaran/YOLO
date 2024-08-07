@@ -1,7 +1,7 @@
-## YOLOv9 Live Object Detection Android Application
+## YOLOv10 Live Object Detection Android Application
 
 ### Description
-This Android application is designed to perform live object detection using the YOLOv9 machine learning model. YOLOv9 (You Only Look Once version 9) is known for its real-time object detection capabilities, and this app brings that functionality to Android devices.
+This Android application is designed to perform live object detection using the YOLOv10 machine learning model. YOLOv10 (You Only Look Once version 10) is known for its real-time object detection capabilities, and this app brings that functionality to Android devices.
 
 ### Getting Started
 To use this repository for any custom YOLOv9 Object detection model, follow these steps:
