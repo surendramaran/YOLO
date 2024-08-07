@@ -3,14 +3,14 @@ package com.surendramaran.yolov8_instancesegmentation.ml
 import kotlin.math.exp
 
 object ImageUtils {
-    fun List<IntArray>.scaleMask(targetWidth: Int, targetHeight: Int): List<IntArray> {
+    fun Array<IntArray>.scaleMask(targetWidth: Int, targetHeight: Int): Array<IntArray> {
         val originalHeight = this.size
         val originalWidth = this[0].size
 
         val xRatio = originalWidth.toDouble() / targetWidth
         val yRatio = originalHeight.toDouble() / targetHeight
 
-        val output = List(targetHeight) { IntArray(targetWidth) }
+        val output = Array(targetHeight) { IntArray(targetWidth) }
 
         for (y in 0 until targetHeight) {
             for (x in 0 until targetWidth) {
@@ -23,16 +23,21 @@ object ImageUtils {
         return output
     }
 
-    fun Array<FloatArray>.toMask() : List<IntArray> {
-        return this.map { floatArray ->
-            floatArray.map { if (it > 0) 1 else 0 }.toIntArray()
+    fun Array<FloatArray>.toMask() : Array<IntArray> {
+        return Array(this.size) { i ->
+            IntArray(this[i].size) { j ->
+                if (this[i][j] > 0) 1 else 0
+            }
         }
     }
 
 
-    fun List<IntArray>.smooth(kernel: Int) : List<IntArray> {
-        val maskFloat = this.map { intArray ->
-            intArray.map { if (it > 0) 1F else 0F }.toFloatArray()
+    fun Array<IntArray>.smooth(kernel: Int) : Array<IntArray> {
+        // Using Array because it is faster then List
+        val maskFloat = Array(this.size) { i ->
+            FloatArray(this[i].size) { j ->
+                if (this[i][j] > 0) 1F else 0F
+            }
         }
         val gaussianKernel = createGaussianKernel(kernel)
         val blurredImage = applyGaussianBlur(maskFloat, gaussianKernel)
@@ -63,12 +68,12 @@ object ImageUtils {
         return kernel
     }
 
-    private fun applyGaussianBlur(image: List<FloatArray>, kernel: Array<FloatArray>): List<FloatArray> {
+    private fun applyGaussianBlur(image: Array<FloatArray>, kernel: Array<FloatArray>): Array<FloatArray> {
         val height = image.size
         val width = image[0].size
         val kernelSize = kernel.size
         val offset = kernelSize / 2
-        val blurredImage = List(height) { FloatArray(width) { 0F } }
+        val blurredImage = Array(height) { FloatArray(width) { 0F } }
 
         for (i in offset until height - offset) {
             for (j in offset until width - offset) {
@@ -86,10 +91,10 @@ object ImageUtils {
         return blurredImage
     }
 
-    private fun thresholdImage(image: List<FloatArray>): List<IntArray> {
+    private fun thresholdImage(image: Array<FloatArray>): Array<IntArray> {
         val height = image.size
         val width = image[0].size
-        return List(height) { i ->
+        return Array(height) { i ->
             IntArray(width) { j ->
                 if (image[i][j] > 0.9F) 1 else 0
             }

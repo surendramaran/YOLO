@@ -47,7 +47,7 @@ class DrawImages(private val context: Context) {
             }
         } else {
             if (isMaskOut) {
-                val list = success.results.map { it.mask }
+                val list = success.results.map { it.mask }.toTypedArray()
                 return listOf(Pair(maskOut(original, list.combineMasks()), null))
             } else {
                 val results = success.results
@@ -76,7 +76,7 @@ class DrawImages(private val context: Context) {
     }
 
 
-    private fun maskOut(image: Bitmap, mask: List<IntArray>) : Bitmap {
+    private fun maskOut(image: Bitmap, mask: Array<IntArray>) : Bitmap {
         if (image.height != mask.size || image.width != mask[0].size) {
             throw IllegalArgumentException("Mask dimensions must match image dimensions")
         }
@@ -99,15 +99,15 @@ class DrawImages(private val context: Context) {
         return result
     }
 
-    private fun List<List<IntArray>>.combineMasks(): List<IntArray> {
+    private fun Array<Array<IntArray>>.combineMasks(): Array<IntArray> {
         if (this.isEmpty() || this.first().isEmpty()) {
-            return emptyList()
+            return emptyArray()
         }
 
         val numArrays = this.first().size
         val arraySize = this.first().first().size
 
-        val result = List(numArrays) { IntArray(arraySize) }
+        val result = Array(numArrays) { IntArray(arraySize) }
 
         for (mask in this) {
             for ((index, array) in mask.withIndex()) {

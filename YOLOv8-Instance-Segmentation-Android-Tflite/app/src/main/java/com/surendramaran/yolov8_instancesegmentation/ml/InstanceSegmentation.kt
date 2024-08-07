@@ -171,7 +171,7 @@ class InstanceSegmentation(
         ))
     }
 
-    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>): List<IntArray> {
+    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>): Array<IntArray> {
         val output1Copy = output1.clone()
         val relX1 = output0.x1 * xPoints
         val relY1 = output0.y1 * yPoints
