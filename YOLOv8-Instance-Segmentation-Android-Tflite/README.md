@@ -1,7 +1,7 @@
 ## YOLOv8 Instance Segmentation Android Application
 
 ### Description
-This Android application is designed to perform Instance Segmentation using the YOLOv8 machine learning model. YOLOv8 (You Only Look Once version 8) is known for its real-time object detection capabilities, and this app brings that functionality to Android devices.
+This Android application is designed to perform Instance Segmentation using the YOLOv8 machine learning model. This app brings instance segmentation functionality to Android devices.
 
 ### Note
 For some reason Tflite Interpreter was not loading int8 models. Use Float32 or Float16

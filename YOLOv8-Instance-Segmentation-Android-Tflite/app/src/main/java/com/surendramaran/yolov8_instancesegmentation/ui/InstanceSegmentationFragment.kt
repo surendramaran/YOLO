@@ -25,6 +25,7 @@ import androidx.lifecycle.lifecycleScope
 import com.surendramaran.yolov8_instancesegmentation.BuildConfig
 import com.surendramaran.yolov8_instancesegmentation.Constants.LABELS_PATH
 import com.surendramaran.yolov8_instancesegmentation.Constants.MODEL_PATH
+import com.surendramaran.yolov8_instancesegmentation.Constants.SMOOTH_EDGES
 import com.surendramaran.yolov8_instancesegmentation.R
 import com.surendramaran.yolov8_instancesegmentation.databinding.DialogSettingsBinding
 import com.surendramaran.yolov8_instancesegmentation.databinding.FragmentInstanceSegmentationBinding
@@ -104,7 +105,7 @@ class InstanceSegmentationFragment : Fragment(){
                 context = requireContext(),
                 modelPath = MODEL_PATH,
                 labelPath = LABELS_PATH,
-                smoothEdges = true
+                smoothEdges = SMOOTH_EDGES
             ) {
                 toast(it)
             }
@@ -154,12 +155,6 @@ class InstanceSegmentationFragment : Fragment(){
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        instanceSegmentation?.close()
-        backgroundExecutor.shutdown()
-    }
-
     private fun processSuccessResult(original: Bitmap, success: Success) {
         requireActivity().runOnUiThread {
             binding.apply {
@@ -192,6 +187,12 @@ class InstanceSegmentationFragment : Fragment(){
             viewPagerAdapter.updateImages(mutableListOf())
             Toast.makeText(requireContext(), error, Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        instanceSegmentation?.close()
+        backgroundExecutor.shutdown()
     }
 
     private fun showSettingsDialog() {

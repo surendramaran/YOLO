@@ -76,7 +76,7 @@ class DrawImages(private val context: Context) {
     }
 
 
-    private fun maskOut(image: Bitmap, mask: List<DoubleArray>) : Bitmap {
+    private fun maskOut(image: Bitmap, mask: List<IntArray>) : Bitmap {
         if (image.height != mask.size || image.width != mask[0].size) {
             throw IllegalArgumentException("Mask dimensions must match image dimensions")
         }
@@ -88,8 +88,8 @@ class DrawImages(private val context: Context) {
                 val maskValue = mask[y][x]
                 val pixel = image.getPixel(x, y)
                 val resultPixel = when (maskValue) {
-                    255.0 -> pixel
-                    0.0 -> Color.BLACK
+                    1-> pixel
+                    0 -> Color.BLACK
                     else -> throw IllegalArgumentException("Mask values must be either 0.0 or 255.0")
                 }
                 result.setPixel(x, y, resultPixel)
@@ -99,7 +99,7 @@ class DrawImages(private val context: Context) {
         return result
     }
 
-    private fun List<List<DoubleArray>>.combineMasks(): List<DoubleArray> {
+    private fun List<List<IntArray>>.combineMasks(): List<IntArray> {
         if (this.isEmpty() || this.first().isEmpty()) {
             return emptyList()
         }
@@ -107,7 +107,7 @@ class DrawImages(private val context: Context) {
         val numArrays = this.first().size
         val arraySize = this.first().first().size
 
-        val result = List(numArrays) { DoubleArray(arraySize) }
+        val result = List(numArrays) { IntArray(arraySize) }
 
         for (mask in this) {
             for ((index, array) in mask.withIndex()) {
@@ -115,7 +115,7 @@ class DrawImages(private val context: Context) {
                     throw IllegalArgumentException("All DoubleArrays must be of the same size.")
                 }
                 for (i in array.indices) {
-                    if (result[index][i] == 0.0) {
+                    if (result[index][i] == 0) {
                         result[index][i] += array[i]
                     }
                 }

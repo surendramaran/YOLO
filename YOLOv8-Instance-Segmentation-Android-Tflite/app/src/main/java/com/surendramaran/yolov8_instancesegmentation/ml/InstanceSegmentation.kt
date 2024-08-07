@@ -23,8 +23,8 @@ class InstanceSegmentation(
     context: Context,
     modelPath: String,
     labelPath: String?,
-    private val smoothEdges: Boolean = true,
-    private val smoothnessKernel: Int = 7, // keep odd number only
+    private val smoothEdges: Boolean,
+    private val smoothnessKernel: Int = 5, // keep odd number only
     private val message: (String) -> Unit
 ) {
     private var interpreter: Interpreter
@@ -45,22 +45,20 @@ class InstanceSegmentation(
 
     init {
 
-        /* Using GPU cause problems with Recycler View
+        /* Using GPU cause problems */
 
-        val compatList = CompatibilityList()
-            Interpreter.Options().apply{
-                if(compatList.isDelegateSupportedOnThisDevice){
-                    val delegateOptions = compatList.bestOptionsForThisDevice
-                    this.addDelegate(GpuDelegate(delegateOptions))
-                } else {
-                    this.setNumThreads(4)
-                }
-            }
-        */
+//        val compatList = CompatibilityList()
+//        val options = Interpreter.Options().apply{
+//            if(compatList.bestOptionsForThisDevice){
+//                val delegateOptions = compatList.bestOptionsForThisDevice
+//                this.addDelegate(GpuDelegate(delegateOptions))
+//            } else {
+//                this.setNumThreads(4)
+//            }
+//        }
 
-        val options = Interpreter.Options().apply{
-            this.setNumThreads(4)
-        }
+        val options = Interpreter.Options()
+        options.setNumThreads(2)
 
         val model = FileUtil.loadMappedFile(context, modelPath)
         interpreter = Interpreter(model, options)
@@ -171,10 +169,9 @@ class InstanceSegmentation(
             postProcessTime = postProcessTime,
             results =  segmentationResults
         ))
-
     }
 
-    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>): List<DoubleArray> {
+    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>): List<IntArray> {
         val output1Copy = output1.clone()
         val relX1 = output0.x1 * xPoints
         val relY1 = output0.y1 * yPoints
