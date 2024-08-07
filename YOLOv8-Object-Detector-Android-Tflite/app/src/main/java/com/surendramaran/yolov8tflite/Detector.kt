@@ -5,10 +5,8 @@ import android.graphics.Bitmap
 import android.os.SystemClock
 import com.surendramaran.yolov8tflite.MetaData.extractNamesFromLabelFile
 import com.surendramaran.yolov8tflite.MetaData.extractNamesFromMetadata
-import org.json.JSONObject
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
-import org.tensorflow.lite.Tensor
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.gpu.GpuDelegate
 import org.tensorflow.lite.support.common.FileUtil
@@ -16,18 +14,7 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
-import org.tensorflow.lite.support.metadata.MetadataExtractor
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.io.BufferedReader
-import java.io.FileInputStream
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
-import java.nio.MappedByteBuffer
-import java.nio.channels.FileChannel
-import java.nio.charset.Charset
 
 class Detector(
     private val context: Context,

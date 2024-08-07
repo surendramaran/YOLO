@@ -3,6 +3,8 @@ package com.surendramaran.yolov8imageclassification
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.SystemClock
+import com.surendramaran.yolov8imageclassification.MetaData.extractNamesFromLabelFile
+import com.surendramaran.yolov8imageclassification.MetaData.extractNamesFromMetadata
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
 import org.tensorflow.lite.support.common.FileUtil
@@ -11,16 +13,13 @@ import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 
 class ImageClassification(
     private val context: Context,
     private val modelPath: String,
-    private val labelPath: String,
+    private val labelPath: String?,
     private val classificationListener: ClassificationListener,
+    private val message: (String) -> Unit
 ) {
 
     private var interpreter: Interpreter
@@ -57,6 +56,16 @@ class ImageClassification(
         val model = FileUtil.loadMappedFile(context, modelPath)
         interpreter = Interpreter(model, options)
 
+        labels.addAll(extractNamesFromMetadata(model))
+        if (labels.isEmpty()) {
+            if (labelPath == null) {
+                message("Model not contains metadata, provide LABELS_PATH in Constants.kt")
+                labels.addAll(MetaData.TEMP_CLASSES)
+            } else {
+                labels.addAll(extractNamesFromLabelFile(context, labelPath))
+            }
+        }
+
         val inputShape = interpreter.getInputTensor(0)?.shape()
         val outputShape = interpreter.getOutputTensor(0)?.shape()
 
@@ -72,22 +81,6 @@ class ImageClassification(
         }
         if (outputShape != null) {
             numClass = outputShape[1]
-        }
-
-        try {
-            val inputStream: InputStream = context.assets.open(labelPath)
-            val reader = BufferedReader(InputStreamReader(inputStream))
-
-            var line: String? = reader.readLine()
-            while (line != null && line != "") {
-                labels.add(line)
-                line = reader.readLine()
-            }
-
-            reader.close()
-            inputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 

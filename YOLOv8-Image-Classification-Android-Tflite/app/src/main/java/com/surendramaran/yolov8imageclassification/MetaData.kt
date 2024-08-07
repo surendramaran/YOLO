@@ -1,4 +1,4 @@
-package com.surendramaran.yolov8tflite
+package com.surendramaran.yolov8imageclassification
 
 import android.content.Context
 import org.tensorflow.lite.support.metadata.MetadataExtractor
