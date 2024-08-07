@@ -3,8 +3,12 @@ package com.surendramaran.yolov8tflite
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.SystemClock
+import com.surendramaran.yolov8tflite.MetaData.extractNamesFromLabelFile
+import com.surendramaran.yolov8tflite.MetaData.extractNamesFromMetadata
+import org.json.JSONObject
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
+import org.tensorflow.lite.Tensor
 import org.tensorflow.lite.gpu.CompatibilityList
 import org.tensorflow.lite.gpu.GpuDelegate
 import org.tensorflow.lite.support.common.FileUtil
@@ -12,17 +16,25 @@ import org.tensorflow.lite.support.common.ops.CastOp
 import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.support.metadata.MetadataExtractor
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.BufferedReader
+import java.io.FileInputStream
 import java.io.IOException
 import java.io.InputStream
 import java.io.InputStreamReader
+import java.nio.ByteBuffer
+import java.nio.ByteOrder
+import java.nio.MappedByteBuffer
+import java.nio.channels.FileChannel
+import java.nio.charset.Charset
 
 class Detector(
     private val context: Context,
     private val modelPath: String,
-    private val labelPath: String,
+    private val labelPath: String?,
     private val detectorListener: DetectorListener,
+    private val message: (String) -> Unit
 ) {
 
     private var interpreter: Interpreter
@@ -56,6 +68,16 @@ class Detector(
         val inputShape = interpreter.getInputTensor(0)?.shape()
         val outputShape = interpreter.getOutputTensor(0)?.shape()
 
+        labels.addAll(extractNamesFromMetadata(model))
+        if (labels.isEmpty()) {
+            if (labelPath == null) {
+                message("Model not contains metadata, provide LABELS_PATH in Constants.kt")
+                labels.addAll(MetaData.TEMP_CLASSES)
+            } else {
+                labels.addAll(extractNamesFromLabelFile(context, labelPath))
+            }
+        }
+
         if (inputShape != null) {
             tensorWidth = inputShape[1]
             tensorHeight = inputShape[2]
@@ -70,22 +92,6 @@ class Detector(
         if (outputShape != null) {
             numChannel = outputShape[1]
             numElements = outputShape[2]
-        }
-
-        try {
-            val inputStream: InputStream = context.assets.open(labelPath)
-            val reader = BufferedReader(InputStreamReader(inputStream))
-
-            var line: String? = reader.readLine()
-            while (line != null && line != "") {
-                labels.add(line)
-                line = reader.readLine()
-            }
-
-            reader.close()
-            inputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 
@@ -117,10 +123,12 @@ class Detector(
     }
 
     fun detect(frame: Bitmap) {
-        if (tensorWidth == 0) return
-        if (tensorHeight == 0) return
-        if (numChannel == 0) return
-        if (numElements == 0) return
+        if (tensorWidth == 0
+            || tensorHeight == 0
+            || numChannel == 0
+            || numElements == 0) {
+            return
+        }
 
         var inferenceTime = SystemClock.uptimeMillis()
 

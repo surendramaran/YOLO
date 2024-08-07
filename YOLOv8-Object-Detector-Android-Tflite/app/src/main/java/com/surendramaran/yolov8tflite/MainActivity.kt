@@ -5,7 +5,9 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.os.Bundle
+import android.os.Message
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.AspectRatio
@@ -43,7 +45,9 @@ class MainActivity : AppCompatActivity(), Detector.DetectorListener {
         cameraExecutor = Executors.newSingleThreadExecutor()
 
         cameraExecutor.execute {
-            detector = Detector(baseContext, MODEL_PATH, LABELS_PATH, this)
+            detector = Detector(baseContext, MODEL_PATH, LABELS_PATH, this) {
+                toast(it)
+            }
         }
 
         if (allPermissionsGranted()) {
@@ -154,6 +158,12 @@ class MainActivity : AppCompatActivity(), Detector.DetectorListener {
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()) {
         if (it[Manifest.permission.CAMERA] == true) { startCamera() }
+    }
+
+    private fun toast(message: String) {
+        runOnUiThread {
+            Toast.makeText(baseContext, message, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun onDestroy() {
