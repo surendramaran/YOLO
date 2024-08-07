@@ -9,8 +9,8 @@ This Android application is designed to perform live image classification using 
 ### Getting Started
 To use this repository for any custom YOLOv8 image classification model, follow these steps:
 1. Clone this project to your local machine.
-2. Put your .tflite model and .txt label file inside the assets folder
-3. Rename paths of your model and labels file in Constants.kt file
+2. Put your .tflite model inside the assets folder
+3. Rename paths of your model path in Constants.kt file
 4. **Build and Run:**
 
 ### Contributing
