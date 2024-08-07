@@ -6,6 +6,8 @@ import android.os.SystemClock
 import com.surendramaran.yolov8_instancesegmentation.ml.ImageUtils.scaleMask
 import com.surendramaran.yolov8_instancesegmentation.ml.ImageUtils.smooth
 import com.surendramaran.yolov8_instancesegmentation.ml.ImageUtils.toMask
+import com.surendramaran.yolov8_instancesegmentation.ml.MetaData.extractNamesFromLabelFile
+import com.surendramaran.yolov8_instancesegmentation.ml.MetaData.extractNamesFromMetadata
 import com.surendramaran.yolov8_instancesegmentation.utils.Utils.clone
 import org.tensorflow.lite.DataType
 import org.tensorflow.lite.Interpreter
@@ -15,18 +17,15 @@ import org.tensorflow.lite.support.common.ops.NormalizeOp
 import org.tensorflow.lite.support.image.ImageProcessor
 import org.tensorflow.lite.support.image.TensorImage
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
-import java.io.BufferedReader
-import java.io.IOException
-import java.io.InputStream
-import java.io.InputStreamReader
 import java.nio.ByteBuffer
 
 class InstanceSegmentation(
     context: Context,
     modelPath: String,
-    labelPath: String,
+    labelPath: String?,
     private val smoothEdges: Boolean = true,
-    private val smoothnessKernel: Int = 7 // keep odd number only
+    private val smoothnessKernel: Int = 7, // keep odd number only
+    private val message: (String) -> Unit
 ) {
     private var interpreter: Interpreter
     private var labels = mutableListOf<String>()
@@ -66,6 +65,16 @@ class InstanceSegmentation(
         val model = FileUtil.loadMappedFile(context, modelPath)
         interpreter = Interpreter(model, options)
 
+        labels.addAll(extractNamesFromMetadata(model))
+        if (labels.isEmpty()) {
+            if (labelPath == null) {
+                message("Model not contains metadata, provide LABELS_PATH in Constants.kt")
+                labels.addAll(MetaData.TEMP_CLASSES)
+            } else {
+                labels.addAll(extractNamesFromLabelFile(context, labelPath))
+            }
+        }
+
         val inputShape = interpreter.getInputTensor(0)?.shape()
         val outputShape0 = interpreter.getOutputTensor(0)?.shape()
         val outputShape1 = interpreter.getOutputTensor(1)?.shape()
@@ -96,22 +105,6 @@ class InstanceSegmentation(
                 yPoints = outputShape1[2]
                 masksNum = outputShape1[3]
             }
-        }
-
-        try {
-            val inputStream: InputStream = context.assets.open(labelPath)
-            val reader = BufferedReader(InputStreamReader(inputStream))
-
-            var line: String? = reader.readLine()
-            while (line != null && line != "") {
-                labels.add(line)
-                line = reader.readLine()
-            }
-
-            reader.close()
-            inputStream.close()
-        } catch (e: IOException) {
-            e.printStackTrace()
         }
     }
 

@@ -9,8 +9,8 @@ For some reason Tflite Interpreter was not loading int8 models. Use Float32 or F
 ### Getting Started
 To use this repository for any custom YOLOv8 Instance Segmentation model, follow these steps:
 1. Clone this repository to your local machine.
-2. Put your exported .tflite model and .txt label file inside the assets folder
-3. Rename paths of your model and labels file in Constants.kt file
+2. Put your exported .tflite model file inside the assets folder
+3. Rename path of your model file in Constants.kt file
 4. **Build and Run:**
 
 ### Contributing

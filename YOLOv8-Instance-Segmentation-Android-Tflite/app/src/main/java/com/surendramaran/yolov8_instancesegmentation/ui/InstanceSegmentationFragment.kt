@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.surendramaran.yolov8_instancesegmentation.BuildConfig
 import com.surendramaran.yolov8_instancesegmentation.Constants.LABELS_PATH
 import com.surendramaran.yolov8_instancesegmentation.Constants.MODEL_PATH
@@ -33,6 +34,8 @@ import com.surendramaran.yolov8_instancesegmentation.ml.Success
 import com.surendramaran.yolov8_instancesegmentation.utils.OrientationLiveData
 import com.surendramaran.yolov8_instancesegmentation.utils.Utils
 import com.surendramaran.yolov8_instancesegmentation.utils.Utils.addCarouselEffect
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
@@ -102,7 +105,9 @@ class InstanceSegmentationFragment : Fragment(){
                 modelPath = MODEL_PATH,
                 labelPath = LABELS_PATH,
                 smoothEdges = true
-            )
+            ) {
+                toast(it)
+            }
         }
 
         drawImages = DrawImages(requireContext())
@@ -221,5 +226,11 @@ class InstanceSegmentationFragment : Fragment(){
             }
         }
         dialog.show()
+    }
+
+    private fun toast(message: String) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
+        }
     }
 }
