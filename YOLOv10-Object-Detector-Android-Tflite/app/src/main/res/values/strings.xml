@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">YOLOv10 Object Detection</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="interface_time">Interface Time:</string>
+    <string name="gpu">GPU</string>
+    <string name="patreon_message">Support me at Patreon</string>
+    <string name="gpu_acceleration">GPU Acceleration</string>
+</resources>

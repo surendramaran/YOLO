@@ -1,0 +1,10 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.YOLOv10ObjectDetector" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="android:fontFamily">@font/merriweather_regular</item>
+        <item name="android:textColor">@color/text_black</item>
+    </style>
+
+    <style name="Theme.YOLOv10ObjectDetector" parent="Base.Theme.YOLOv10ObjectDetector" />
+</resources>
