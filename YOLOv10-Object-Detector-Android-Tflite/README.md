@@ -4,7 +4,7 @@
 This Android application is designed to perform live object detection using the YOLOv10 machine learning model. YOLOv10 (You Only Look Once version 10) is known for its real-time object detection capabilities, and this app brings that functionality to Android devices.
 
 ### Getting Started
-To use this repository for any custom YOLOv9 Object detection model, follow these steps:
+To use this repository for any custom YOLOv10 Object detection model, follow these steps:
 1. Clone this project to your local machine.
 2. Put your .tflite model inside the assets folder
 3. Rename path of your model path in Constants.kt file
