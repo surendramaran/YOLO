@@ -8,7 +8,7 @@ To use this repository for any custom YOLOv10 Object detection model, follow the
 1. Clone this project to your local machine.
 2. Put your .tflite model inside the assets folder
 3. Rename path of your model path in Constants.kt file
-4. **Build and Run:**
+4. **Build and Run**
 
 ### Contributing
 Contributions are welcome! If you want to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
