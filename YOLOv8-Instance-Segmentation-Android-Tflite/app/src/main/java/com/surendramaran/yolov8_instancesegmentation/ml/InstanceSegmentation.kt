@@ -23,8 +23,7 @@ class InstanceSegmentation(
     context: Context,
     modelPath: String,
     labelPath: String?,
-    private val smoothEdges: Boolean,
-    private val smoothnessKernel: Int = 5, // keep odd number only
+    private val smoothnessKernel: Int = 5,
     private val message: (String) -> Unit
 ) {
     private var interpreter: Interpreter
@@ -110,7 +109,7 @@ class InstanceSegmentation(
         interpreter.close()
     }
 
-    fun invoke(frame: Bitmap, onSuccess: (Success) -> Unit, onFailure: (String) -> Unit ) {
+    fun invoke(frame: Bitmap, smoothEdges: Boolean, onSuccess: (Success) -> Unit, onFailure: (String) -> Unit ) {
         if (tensorWidth == 0 || tensorHeight == 0
             || numChannel == 0 || numElements == 0
             || xPoints == 0 || yPoints == 0 || masksNum == 0) {
@@ -157,7 +156,7 @@ class InstanceSegmentation(
         val segmentationResults = bestBoxes.map {
             SegmentationResult(
                 box = it,
-                mask = getFinalMask(frame.width, frame.height, it, maskProto)
+                mask = getFinalMask(frame.width, frame.height, it, maskProto, smoothEdges)
             )
         }
 
@@ -171,7 +170,7 @@ class InstanceSegmentation(
         ))
     }
 
-    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>): Array<IntArray> {
+    private fun getFinalMask(width: Int, height: Int, output0: Output0, output1: List<Array<FloatArray>>, smoothEdges: Boolean): Array<IntArray> {
         val output1Copy = output1.clone()
         val relX1 = output0.x1 * xPoints
         val relY1 = output0.y1 * yPoints
@@ -190,8 +189,14 @@ class InstanceSegmentation(
             }
         }
 
-        val scaledMask = zero.toMask().scaleMask(width, height)
-        return if (smoothEdges) scaledMask.smooth(smoothnessKernel) else scaledMask
+        var scaledMask = zero.toMask()
+        if (smoothEdges) {
+            val smoothHeight = ((height.toDouble() / width.toDouble()) * 640).toInt()
+            val smooth = scaledMask.scaleMask(640, smoothHeight)
+            scaledMask = smooth.smooth(smoothnessKernel)
+        }
+
+        return scaledMask.scaleMask(width, height)
     }
 
     private fun reshapeMaskOutput(floatArray: FloatArray): List<Array<FloatArray>> {

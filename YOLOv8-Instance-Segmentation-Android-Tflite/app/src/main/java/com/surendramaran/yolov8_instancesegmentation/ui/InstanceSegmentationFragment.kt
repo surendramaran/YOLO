@@ -25,7 +25,6 @@ import androidx.lifecycle.lifecycleScope
 import com.surendramaran.yolov8_instancesegmentation.BuildConfig
 import com.surendramaran.yolov8_instancesegmentation.Constants.LABELS_PATH
 import com.surendramaran.yolov8_instancesegmentation.Constants.MODEL_PATH
-import com.surendramaran.yolov8_instancesegmentation.Constants.SMOOTH_EDGES
 import com.surendramaran.yolov8_instancesegmentation.R
 import com.surendramaran.yolov8_instancesegmentation.databinding.DialogSettingsBinding
 import com.surendramaran.yolov8_instancesegmentation.databinding.FragmentInstanceSegmentationBinding
@@ -38,8 +37,6 @@ import com.surendramaran.yolov8_instancesegmentation.utils.Utils.addCarouselEffe
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
 
 class InstanceSegmentationFragment : Fragment(){
     private var _binding: FragmentInstanceSegmentationBinding? = null
@@ -50,7 +47,6 @@ class InstanceSegmentationFragment : Fragment(){
     private var instanceSegmentation: InstanceSegmentation? = null
     private lateinit var orientationLiveData: OrientationLiveData
 
-    private lateinit var backgroundExecutor: ExecutorService
     private lateinit var viewPagerAdapter: ViewPagerAdapter
 
     private lateinit var drawImages: DrawImages
@@ -98,18 +94,15 @@ class InstanceSegmentationFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        backgroundExecutor = Executors.newSingleThreadExecutor()
 
-        backgroundExecutor.execute {
-            instanceSegmentation = InstanceSegmentation(
-                context = requireContext(),
-                modelPath = MODEL_PATH,
-                labelPath = LABELS_PATH,
-                smoothEdges = SMOOTH_EDGES
-            ) {
-                toast(it)
-            }
+        instanceSegmentation = InstanceSegmentation(
+            context = requireContext(),
+            modelPath = MODEL_PATH,
+            labelPath = LABELS_PATH
+        ) {
+            toast(it)
         }
+
 
         drawImages = DrawImages(requireContext())
 
@@ -146,9 +139,10 @@ class InstanceSegmentationFragment : Fragment(){
     }
 
     private fun runInstanceSegmentation(bitmap: Bitmap) {
-        backgroundExecutor.submit {
+        lifecycleScope.launch(Dispatchers.Default) {
             instanceSegmentation?.invoke(
                 frame = bitmap,
+                smoothEdges = viewModel.isSmoothEdges,
                 onSuccess = {  processSuccessResult(bitmap, it) },
                 onFailure = { clearOutput(it) }
             )
@@ -192,7 +186,6 @@ class InstanceSegmentationFragment : Fragment(){
     override fun onDestroy() {
         super.onDestroy()
         instanceSegmentation?.close()
-        backgroundExecutor.shutdown()
     }
 
     private fun showSettingsDialog() {
@@ -211,6 +204,7 @@ class InstanceSegmentationFragment : Fragment(){
 
             cbSeparateOut.isChecked = viewModel.isSeparateOutChecked
             cbMaskOut.isChecked = viewModel.isMaskOutChecked
+            cbSmoothEdges.isChecked = viewModel.isSmoothEdges
 
             cbSeparateOut.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.isSeparateOutChecked = isChecked
@@ -218,6 +212,10 @@ class InstanceSegmentationFragment : Fragment(){
 
             cbMaskOut.setOnCheckedChangeListener { _, isChecked ->
                 viewModel.isMaskOutChecked = isChecked
+            }
+
+            cbSmoothEdges.setOnCheckedChangeListener { _, isChecked ->
+                viewModel.isSmoothEdges = isChecked
             }
 
             llPatreon.setOnClickListener {

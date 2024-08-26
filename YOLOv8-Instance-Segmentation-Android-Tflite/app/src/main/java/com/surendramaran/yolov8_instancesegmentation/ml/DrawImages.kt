@@ -60,8 +60,6 @@ class DrawImages(private val context: Context) {
                     colorPairs[it.box.cls] = getNextColor()
                 }
 
-                println(colorPairs)
-
                 val width = results.first().mask[0].size
                 val height = results.first().mask.size
 

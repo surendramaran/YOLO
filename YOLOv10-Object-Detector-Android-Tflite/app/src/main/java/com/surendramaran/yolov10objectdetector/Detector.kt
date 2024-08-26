@@ -54,6 +54,8 @@ class Detector(
             }
         }
 
+        labels.forEach(::println)
+
         val inputShape = interpreter.getInputTensor(0)?.shape()
         val outputShape = interpreter.getOutputTensor(0)?.shape()
 
