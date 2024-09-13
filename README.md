@@ -4,4 +4,4 @@ Welcome to the **YOLO (You Only Look Once)** repository! This project focuses on
 
 
 ### Contact
-For any questions or feedback, feel free to contact [surendramaran8@gmail.com] or open an [issue](https://github.com/surendramaran/Machine-Learning-in-Mobile/issues/new) in the repository.
+For any questions or feedback, feel free to open an [issue](https://github.com/surendramaran/Machine-Learning-in-Mobile/issues/new) in the repository.
