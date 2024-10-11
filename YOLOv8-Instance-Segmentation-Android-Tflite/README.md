@@ -17,7 +17,10 @@ To use this repository for any custom YOLOv8 Instance Segmentation model, follow
 Contributions are welcome! If you want to contribute to this project, feel free to fork the repository and submit a pull request with your changes.
 
 ### Contact
-For any questions or feedback, feel free to contact [surendramaran8@gmail.com] or open an [issue](https://github.com/surendramaran/YOLO/issues/new) in the repository.
+For any questions or feedback, feel free to open an [issue](https://github.com/surendramaran/Machine-Learning-in-Mobile/issues/new) in the repository.
+
+### Support
+If you find this project helpful and want to support its development, consider becoming a patron on [Patreon](https://www.patreon.com/SurendraMaran). Your support will help in maintaining and improving the project. Thank you!
 
 ### Support
 If you find this project helpful and want to support its development, consider becoming a patron on [Patreon](https://www.patreon.com/SurendraMaran). Your support will help in maintaining and improving the project. Thank you!
