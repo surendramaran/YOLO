@@ -36,7 +36,6 @@ import com.surendramaran.yolov8_instancesegmentation.utils.Utils
 import com.surendramaran.yolov8_instancesegmentation.utils.Utils.addCarouselEffect
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.io.File
 
 class InstanceSegmentationFragment : Fragment(){
     private var _binding: FragmentInstanceSegmentationBinding? = null
@@ -58,13 +57,12 @@ class InstanceSegmentationFragment : Fragment(){
         }
     }
 
-    private var currentPhotoFile: File? = null
+    private var currentPhotoUri: Uri? = null
     private val photoCapture = registerForActivityResult(ActivityResultContracts.TakePicture()) {
         if (it) {
-            currentPhotoFile?.let { file ->
-                val bitmap = Utils.fileToBitmap(file.absolutePath) ?: return@let
-                val rotation = orientationLiveData.value ?: 90
-                val rotated = Utils.rotatedBitmap(bitmap, rotation)
+            currentPhotoUri?.let { uri ->
+                val bitmap = Utils.getBitmapFromUri(requireContext(), uri) ?: return@let
+                val rotated = Utils.rotateImageIfRequired(requireContext(), bitmap, uri)
                 runInstanceSegmentation(rotated)
             }
         }
@@ -124,7 +122,7 @@ class InstanceSegmentationFragment : Fragment(){
                     "${BuildConfig.APPLICATION_ID}.provider",
                     photoFile
                 )
-                currentPhotoFile = photoFile
+                currentPhotoUri = photoUri
                 photoCapture.launch(photoUri)
             }
 

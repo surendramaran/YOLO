@@ -163,5 +163,10 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </com.google.android.material.card.MaterialCardView>
+
+            <ImageView
+                android:id="@+id/ivTop"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
