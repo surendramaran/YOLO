@@ -14,6 +14,6 @@ If you find this project helpful and want to support its development, consider b
 This repository includes code to integrate the YOLO model into mobile applications.
 The YOLOv8, YOLOv9, YOLOv10 model is licensed under the [GNU Affero General Public License (AGPL)](https://www.gnu.org/licenses/agpl-3.0.en.html).
 
-The code and work done to integrate YOLO for mobile use is licensed under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/legalcode).
+The code and work done to integrate YOLO for mobile use is licensed under the [MIT License](https://github.com/surendramaran/YOLO/blob/main/LICENSE).
 
 **Please see the respective licenses for more details.**
