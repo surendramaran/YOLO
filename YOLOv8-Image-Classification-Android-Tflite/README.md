@@ -21,6 +21,3 @@ For any questions or feedback, feel free to open an [issue](https://github.com/s
 
 ### Support
 If you find this project helpful and want to support its development, consider becoming a patron on [Patreon](https://www.patreon.com/SurendraMaran). Your support will help in maintaining and improving the project. Thank you!.
-
-### Support
-If you find this project helpful and want to support its development, consider becoming a patron on [Patreon](https://www.patreon.com/SurendraMaran). Your support will help in maintaining and improving the project. Thank you!
