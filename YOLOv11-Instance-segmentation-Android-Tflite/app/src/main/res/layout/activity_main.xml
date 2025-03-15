@@ -19,27 +19,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"/>
 
-
-    <com.surendramaran.yolov11instancesegmentation.AutoFitTextureView
-        android:id="@+id/viewFinder"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="3:4"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
-
     <ImageView
         android:id="@+id/ivTop"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="@id/viewFinder"
-        app:layout_constraintStart_toStartOf="@id/viewFinder"
-        app:layout_constraintEnd_toEndOf="@id/viewFinder"
-        app:layout_constraintBottom_toBottomOf="@id/viewFinder"/>
+        app:layout_constraintTop_toTopOf="@id/previewView"
+        app:layout_constraintStart_toStartOf="@id/previewView"
+        app:layout_constraintEnd_toEndOf="@id/previewView"
+        app:layout_constraintBottom_toBottomOf="@id/previewView"/>
 
     <LinearLayout
         android:layout_margin="16dp"
