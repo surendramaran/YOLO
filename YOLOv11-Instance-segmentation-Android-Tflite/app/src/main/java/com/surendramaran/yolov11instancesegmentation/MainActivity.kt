@@ -46,10 +46,6 @@ class MainActivity : AppCompatActivity(), InstanceSegmentation.InstanceSegmentat
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.viewFinder.post {
-            binding.viewFinder.setAspectRatio(binding.viewFinder.width, binding.viewFinder.height)
-        }
-
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
