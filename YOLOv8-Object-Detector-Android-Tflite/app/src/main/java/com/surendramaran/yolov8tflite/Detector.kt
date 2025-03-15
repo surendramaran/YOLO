@@ -119,12 +119,17 @@ class Detector(
 
         var inferenceTime = SystemClock.uptimeMillis()
 
+
+
         val resizedBitmap = Bitmap.createScaledBitmap(frame, tensorWidth, tensorHeight, false)
 
         val tensorImage = TensorImage(INPUT_IMAGE_TYPE)
         tensorImage.load(resizedBitmap)
         val processedImage = imageProcessor.process(tensorImage)
         val imageBuffer = processedImage.buffer
+
+        println("numChannel: $numChannel")
+        println("numElements: $numElements")
 
         val output = TensorBuffer.createFixedSize(intArrayOf(1, numChannel, numElements), OUTPUT_IMAGE_TYPE)
         interpreter.run(imageBuffer, output.buffer)
