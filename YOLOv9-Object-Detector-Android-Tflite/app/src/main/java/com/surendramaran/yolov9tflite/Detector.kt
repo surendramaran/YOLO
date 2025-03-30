@@ -121,6 +121,7 @@ class Detector(
         var bestBoxes: List<BoundingBox>? = null
         var inferenceTime = 0L
         synchronized(executingLock) {
+            if (interpreter == null) return
             if (tensorWidth == 0) return
             if (tensorHeight == 0) return
             if (numChannel == 0) return
