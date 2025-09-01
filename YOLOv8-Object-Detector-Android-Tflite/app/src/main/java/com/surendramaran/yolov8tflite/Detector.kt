@@ -85,20 +85,9 @@ class Detector(
     fun restart(isGpu: Boolean) {
         interpreter.close()
 
-        val options = if (isGpu) {
-            val compatList = CompatibilityList()
-            Interpreter.Options().apply{
-                if(compatList.isDelegateSupportedOnThisDevice){
-                    val delegateOptions = compatList.bestOptionsForThisDevice
-                    this.addDelegate(GpuDelegate(delegateOptions))
-                } else {
-                    this.setNumThreads(4)
-                }
-            }
-        } else {
-            Interpreter.Options().apply{
-                this.setNumThreads(4)
-            }
+        val options = Interpreter.Options().apply {
+            numThreads = 4
+            useXNNPACK = true
         }
 
         val model = FileUtil.loadMappedFile(context, modelPath)
