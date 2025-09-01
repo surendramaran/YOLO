@@ -41,7 +41,7 @@ final class Detector {
                 if let results = request.results as? [VNRecognizedObjectObservation] {
                     let detectedData = results.compactMap { observation -> BoundingBox? in
                         let confidence = observation.confidence
-                        if confidence < 0.75 {
+                        if confidence < 0.35 {
                             return nil
                         }
                         guard let topLabel = observation.labels.first else { return nil }

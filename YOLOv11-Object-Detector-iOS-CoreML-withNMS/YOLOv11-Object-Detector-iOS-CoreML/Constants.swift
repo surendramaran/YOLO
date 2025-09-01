@@ -9,5 +9,5 @@ import Foundation
 
 
 struct Constants {
-    static let modelName = "yolov11"
+    static let modelName = "yolo11s"
 }
