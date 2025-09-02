@@ -24,13 +24,14 @@ class Detector(
     private val message: (String) -> Unit
 ) {
 
-    private var interpreter: Interpreter
+    private var interpreter: Interpreter?
     private var labels = mutableListOf<String>()
 
     private var tensorWidth = 0
     private var tensorHeight = 0
     private var numChannel = 0
     private var numElements = 0
+    private var executingLock = Any()
 
     private val imageProcessor = ImageProcessor.Builder()
         .add(NormalizeOp(INPUT_MEAN, INPUT_STANDARD_DEVIATION))
@@ -52,8 +53,8 @@ class Detector(
         val model = FileUtil.loadMappedFile(context, modelPath)
         interpreter = Interpreter(model, options)
 
-        val inputShape = interpreter.getInputTensor(0)?.shape()
-        val outputShape = interpreter.getOutputTensor(0)?.shape()
+        val inputShape = interpreter?.getInputTensor(0)?.shape()
+        val outputShape = interpreter?.getOutputTensor(0)?.shape()
 
         labels.addAll(extractNamesFromMetadata(model))
         if (labels.isEmpty()) {
@@ -83,7 +84,7 @@ class Detector(
     }
 
     fun restart(isGpu: Boolean) {
-        interpreter.close()
+        interpreter?.close()
 
         val options = Interpreter.Options().apply {
             numThreads = 4
@@ -95,43 +96,50 @@ class Detector(
     }
 
     fun close() {
-        interpreter.close()
+        synchronized(executingLock) {
+            interpreter?.close()
+            interpreter = null
+        }
     }
 
     fun detect(frame: Bitmap) {
-        if (tensorWidth == 0
-            || tensorHeight == 0
-            || numChannel == 0
-            || numElements == 0) {
-            return
+        var bestBoxes: List<BoundingBox>?
+        var inferenceTime: Long
+        synchronized(executingLock) {
+            if (interpreter == null) return
+            if (tensorWidth == 0
+                || tensorHeight == 0
+                || numChannel == 0
+                || numElements == 0) {
+                return
+            }
+
+            inferenceTime = SystemClock.uptimeMillis()
+
+
+
+            val resizedBitmap = Bitmap.createScaledBitmap(frame, tensorWidth, tensorHeight, false)
+
+            val tensorImage = TensorImage(INPUT_IMAGE_TYPE)
+            tensorImage.load(resizedBitmap)
+            val processedImage = imageProcessor.process(tensorImage)
+            val imageBuffer = processedImage.buffer
+
+            println("numChannel: $numChannel")
+            println("numElements: $numElements")
+
+            val output = TensorBuffer.createFixedSize(intArrayOf(1, numChannel, numElements), OUTPUT_IMAGE_TYPE)
+            interpreter?.run(imageBuffer, output.buffer)
+
+            bestBoxes = bestBox(output.floatArray)
+            inferenceTime = SystemClock.uptimeMillis() - inferenceTime
+
         }
-
-        var inferenceTime = SystemClock.uptimeMillis()
-
-
-
-        val resizedBitmap = Bitmap.createScaledBitmap(frame, tensorWidth, tensorHeight, false)
-
-        val tensorImage = TensorImage(INPUT_IMAGE_TYPE)
-        tensorImage.load(resizedBitmap)
-        val processedImage = imageProcessor.process(tensorImage)
-        val imageBuffer = processedImage.buffer
-
-        println("numChannel: $numChannel")
-        println("numElements: $numElements")
-
-        val output = TensorBuffer.createFixedSize(intArrayOf(1, numChannel, numElements), OUTPUT_IMAGE_TYPE)
-        interpreter.run(imageBuffer, output.buffer)
-
-        val bestBoxes = bestBox(output.floatArray)
-        inferenceTime = SystemClock.uptimeMillis() - inferenceTime
-
         if (bestBoxes == null) {
             detectorListener.onEmptyDetect()
             return
         }
-
-        detectorListener.onDetect(bestBoxes, inferenceTime)
+        detectorListener.onDetect(bestBoxes!!, inferenceTime)
     }
 
     private fun bestBox(array: FloatArray) : List<BoundingBox>? {
